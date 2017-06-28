@@ -1,15 +1,17 @@
 import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.image.BufferStrategy;
 import java.awt.Graphics;
-import java.lang.Runnable;
-import java.lang.Thread;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class Game extends JFrame implements Runnable
 {
 	private Canvas canvas = new Canvas();
 	private RenderHandler renderer;
+	private BufferedImage testImage;
 
 	public Game() 
 	{
@@ -32,6 +34,8 @@ public class Game extends JFrame implements Runnable
 		canvas.createBufferStrategy(3);
 
 		renderer = new RenderHandler(getWidth(), getHeight());
+		
+		testImage = loadImage("GrassTile.png");
 
 	}
 
@@ -40,12 +44,13 @@ public class Game extends JFrame implements Runnable
 
 	}
 
-
+	
 	public void render() {
 			BufferStrategy bufferStrategy = canvas.getBufferStrategy();
 			Graphics graphics = bufferStrategy.getDrawGraphics();
 			super.paint(graphics);
-
+			
+			renderer.renderImage(testImage, 0,0);
 			renderer.render(graphics);
 
 			graphics.dispose();
@@ -92,6 +97,25 @@ public class Game extends JFrame implements Runnable
 		// 	bufferStrategy.show();
 		// }
 	}
+	
+	private BufferedImage loadImage(String path){
+		
+		
+			try {
+				BufferedImage loadedImage = ImageIO.read(Game.class.getResource(path));
+				BufferedImage formattedImage = new BufferedImage(loadedImage.getWidth(), loadedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+				formattedImage.getGraphics().drawImage(loadedImage, 0,0, null);
+				
+				return formattedImage;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		
+		
+		
+	}
 
 	public static void main(String[] args) 
 	{
@@ -99,5 +123,7 @@ public class Game extends JFrame implements Runnable
 		Thread gameThread = new Thread(game);
 		gameThread.start();
 	}
+	
+	
 
 }
