@@ -34,7 +34,7 @@ public class RenderHandler
 		graphics.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
 	}
 	//Render our image to our array of pixels
-	public void renderImage (BufferedImage image, int xPosition,int yPosition, int xZoom, int yZoom){
+	public void renderImage (BufferedImage image, int xPosition,int yPosition ){ //int xZoom, int yZoom
 		int[]	imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		
 		for(int y=0; y < image.getHeight(); y++){
